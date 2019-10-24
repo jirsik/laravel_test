@@ -16,7 +16,7 @@ class ReviewController extends Controller
      */
     public function index($movie_id)
     {
-        $movie = Movie::with('reviews')->findOrFail($movie_id);
+        $movie = Movie::with('reviews')->findOrFail($movie_id)->first();
         $reviews = $movie->reviews()->get();
         $movie_name = $movie->name;
         //$reviews = Review::where('movie_id', $movie)->get();
@@ -29,9 +29,12 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($movie_id)
     {
-        //
+        $movie = Movie::find($movie_id);
+        $movie_name = $movie->name;
+
+        return view('reviews.create', compact('movie_name', 'movie_id'));
     }
 
     /**
@@ -40,9 +43,16 @@ class ReviewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($movie, Request $request)
     {
-        //
+        $review = new Review();
+        $review->user_id = 5;
+        $review->movie_id = $movie;
+        $review->text = $request->input('review');
+        $review->rating = $request->input('rating');
+        $review->save();
+
+        return redirect(action('ReviewController@index', $movie));
     }
 
     /**

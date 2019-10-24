@@ -31,4 +31,9 @@ class Movie extends Model
     {
         return $this->belongsToMany('App\User', 'favourite_movies');
     }
+
+    public function genres()
+    {
+        return $this->belongsToMany('App\Genre', 'genre_movie');
+    }
 }

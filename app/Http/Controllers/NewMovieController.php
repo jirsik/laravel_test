@@ -16,7 +16,7 @@ class NewMovieController extends Controller
 
     public function show($id)
     {
-        $movie = Movie::find($id); //Movie::findOrFail($id);  .. this will retur 404 in case, there is not a result
+        $movie = Movie::with('genres')->find($id); //Movie::findOrFail($id);  .. this will retur 404 in case, there is not a result
         if ($movie === null) {
             return "movie not found";
         } else {
