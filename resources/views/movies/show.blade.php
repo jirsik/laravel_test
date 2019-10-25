@@ -17,13 +17,26 @@
                     </ul>
                 @endif
 
-               
-                
             </p>
 
         </div>
     
     <a href="{{action('ReviewController@index', $movie->id)}}">Show reviews</a>
-    <a href="{{action('ReviewController@create', $movie->id)}}">Review</a>
+    <br>
+    @if (Auth()->id())
+        <a href="{{action('ReviewController@create', $movie->id)}}">Write review</a>
+        <br>
+    @endif
+    
     <a href="{{action('NewMovieController@index')}}">Go Back</a>
+    <br>
+    {{-- @if ((\Gate::allows('admin')))
+        <a href="{{action('NewMovieController@index')}}">For admin only</a>
+        <br>
+    @endif --}}
+    {{-- the same thing as above: --}}
+    @can('admin')
+        <a href="{{action('NewMovieController@index')}}">For admin only</a>
+    @endcan
+
 @endsection
